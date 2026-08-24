@@ -1,0 +1,36 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>dev.gaphunter.dockerfileunusedstagecompanion</id>
+    <name>Dockerfile Unused Stage Companion</name>
+    <vendor>Gap Hunter Labs</vendor>
+    <description><![CDATA[
+        <p>Warning on a named multi-stage Dockerfile build stage
+        (<code>FROM ... AS name</code>) that's never referenced by a
+        later <code>COPY --from=name</code> and isn't the file's own
+        final stage -- an orphaned intermediate stage that's real,
+        wasted build time and a confusing read for the next person
+        touching the file (usually left behind after a refactor that
+        moved what it built into another stage).</p>
+        <p><b>100% static text analysis</b> -- a plain-text line
+        scanner, not a Dockerfile-language parser, so it works whether
+        the real Docker plugin is installed or not.</p>
+        <p>Stated honestly: v0.1 can't see a stage referenced only via
+        an explicit <code>docker build --target=name</code> invocation
+        outside the file -- that will be flagged as a false positive.
+        Stage names are matched case-insensitively, same as Docker
+        itself.</p>
+        <p>Free. No license nags, no telemetry, no network calls.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language=""
+            groupName="Dockerfile Unused Stage Companion"
+            displayName="Unused Dockerfile build stage"
+            enabledByDefault="true"
+            level="WARNING"
+            implementationClass="dev.gaphunter.dockerfileunusedstagecompanion.inspection.UnusedStageInspection"/>
+        <notificationGroup id="Dockerfile Unused Stage Companion" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>
