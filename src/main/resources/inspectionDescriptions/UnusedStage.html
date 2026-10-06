@@ -1,0 +1,10 @@
+<html>
+<body>
+Reports a named Dockerfile build stage (<code>FROM ... AS name</code>) that no later
+<code>COPY --from=name</code> uses and that is not the final stage.
+<!-- tooltip end -->
+<p>An orphaned stage still costs build time and confuses whoever reads the file next; it is usually left behind after
+a refactor. A stage used only through <code>docker build --target=name</code> outside the file is reported as well,
+because the file alone cannot show that use.</p>
+</body>
+</html>
